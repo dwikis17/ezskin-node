@@ -3,15 +3,19 @@ import indexRoute from './routes/index.js'
 import express from 'express'
 import dotenv from 'dotenv'
 import http from 'http'
-
+import cors from "cors";
+import cookieParser from 'cookie-parser'
 dotenv.config();
 const app = express();
 
 app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  // res.header("Access-Control-Allow-Origin", "*");
+  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+app.use(cors({credentials: true, origin:'http://localhost:3000'}));
+app.use(cookieParser())
 app.use(express.json())
 
 indexRoute(app)
