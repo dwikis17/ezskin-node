@@ -6,6 +6,11 @@ class GameController {
 
         res.json({data})
     }
+
+    static fetchGameById = async (req, res, next) => {
+        const gameDetails = await Game.find({_id:req.params.id})
+        res.json(gameDetails[0]);
+    }
 }
 
-export default GameController
+export default GameController;
