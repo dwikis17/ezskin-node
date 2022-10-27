@@ -7,8 +7,9 @@ class GameController {
         res.json({data})
     }
 
-    static fetchGameById = async (req, res, next) => {
-        const gameDetails = await Game.find({_id:req.params.id})
+    static fetchGameByName= async (req, res, next) => {
+        const gameDetails = await Game.find({altName:req.params.name})
+        console.log(gameDetails)
         res.json(gameDetails[0]);
     }
 }

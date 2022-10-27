@@ -8,6 +8,9 @@ const gameSchema = mongoose.Schema({
     description: {
         type:String
     },
+    altName: {
+        type: String
+    },
     denomination: {
         type: Array
     }
