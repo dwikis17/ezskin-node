@@ -49,25 +49,12 @@ class UserController {
             const userId = user[0]._id;
             const name = user[0].name;
             const email = user[0].email;
-
+        
             const accessToken = jwt.sign({userId, name, email}, process.env.ACCESS_TOKEN_SECRET, {
-                expiresIn : '20s'
+                expiresIn : '24h'
             })
 
-            const refreshToken = jwt.sign({userId, name, email}, process.env.REFRESH_TOKEN_SECRET,
-                {
-                expiresIn : '1d'
-            })
-
-            await User.updateOne({email}, {$set:{
-                refresh_token: refreshToken
-                }})
-
-            res.cookie('refreshToken', refreshToken, {
-                httpOnly:true,
-                maxAge:24* 60 * 60 * 1000
-            })
-
+                
             res.json({accessToken})
         } catch (error){
             res.status(404).json({msg: "email or password doesnt match!"})

@@ -1,4 +1,6 @@
 import midtransClient from 'midtrans-client'
+import Transaction from "../model/Transaction.js";
+
 class ClientController {
     static makePayment = async (req, res, next) => {
         let core = new midtransClient.CoreApi({
@@ -28,31 +30,30 @@ class ClientController {
     }
 
     static makeSnapUIPayment = async (req, res, next) => {
-        console.log(req.query)
-       const {gameName, tagLine, selectedVoucher, game} = req.query
-       const orderId = `${gameName}-${Date.now()}`
-       console.log(orderId)
+       const {inGameName, tagLine, priceAmount, game, nominalVoucher} = req.query
+       const orderId = `${inGameName}-${Date.now()}`
         let snap = new midtransClient.Snap({
             // Set to true if you want Production Environment (accept real transaction).
             isProduction : false,
             serverKey : 'SB-Mid-server-yeZuLmWfa0KrTZyTcA_WqEAj'
         });
-     
+
+       await Transaction.create({...req.query, orderId, paymentStatus: 'Pending'})
         let parameter = {
             "transaction_details": {
                 "order_id": orderId,
-                "gross_amount": selectedVoucher
+                "gross_amount": priceAmount
             },
             "credit_card":{
                 "secure" : true
             },
             "customer_details": {
-                "in game name": gameName,
+                "in game name": inGameName,
                 "tagLine": tagLine,
                 'game order' : game,
             }
         };
-         
+
         snap.createTransaction(parameter)
             .then((transaction)=>{
                 // transaction token
@@ -90,7 +91,7 @@ static notifyPayment = async (req, res , next) => {
             } else if (transactionStatus == 'settlement'){
                 // TODO set transaction status on your database to 'success'
                 // and response with 200 OK
-                console.log(statusResponse)
+                
             } else if (transactionStatus == 'cancel' ||
                 transactionStatus == 'deny' ||
                 transactionStatus == 'expire'){
@@ -98,7 +99,7 @@ static notifyPayment = async (req, res , next) => {
                 // and response with 200 OK
             } else if (transactionStatus == 'pending'){
                 // TODO set transaction status on your database to 'pending' / waiting payment
-                // and response with 200 OK
+                console.log('masuk pending')
             }
         });
 }

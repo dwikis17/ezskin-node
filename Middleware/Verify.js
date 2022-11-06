@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken"
+import jwt, { decode } from "jsonwebtoken"
 
 export const verifyToken = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -8,6 +8,7 @@ export const verifyToken = async (req, res, next) => {
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
         if(err) return res.sendStatus(403)
+        console.log(decodedToken)
         req.email = decodedToken.email
         next();
     })

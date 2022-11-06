@@ -6,7 +6,7 @@ import { refreshToken} from "../controller/RefreshToken.js";
 
 const UserRoute = express.Router();
 
-UserRoute.get('/', fetchAdmin)
+UserRoute.get('/', verifyToken,fetchAdmin)
 UserRoute.post('/register', userRegistration)
 UserRoute.post('/sign-in', doLogin)
 UserRoute.get('/token', refreshToken)

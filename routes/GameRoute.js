@@ -6,6 +6,6 @@ const { fetchGames, fetchGameById } = GameController
 const GameRoute = express.Router();
 
 GameRoute.get('/', fetchGames )
-GameRoute.get('/:id', fetchGameById )
+GameRoute.get('/:name', fetchGameById )
 
 export default GameRoute;
