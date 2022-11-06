@@ -4,8 +4,6 @@ import GameService from "../service/GameService.js";
 const { getAllGames } = GameService
 class GameController {
     static fetchGames = async (req, res ,next) => {
-        console.log(req.query,'query')
-        console.log(req.params, 'parasm')
         const {searchKeyword} = req.query
         try{
             const data = await getAllGames(searchKeyword)

@@ -9,7 +9,7 @@ const gameSchema = mongoose.Schema({
         type:String
     },
     altName: {
-        type:String
+        type: String
     },
     denomination: {
         type: Array
