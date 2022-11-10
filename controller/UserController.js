@@ -1,6 +1,7 @@
 import User from "../model/User.js";
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import Transaction from "../model/Transaction.js";
 
 class UserController {
     static fetchAdmin = async (req,res,next) => {
@@ -95,6 +96,15 @@ class UserController {
             console.log(error)
         }
         
+    }
+
+    static fetchAllTransaction = async (req, res, next) => {
+        try{
+            const transaction = await Transaction.find()
+            res.status(200).send(transaction)
+        }catch(error){
+            next(error)
+        }
     }
 }
 export default UserController
