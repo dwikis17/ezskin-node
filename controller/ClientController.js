@@ -4,7 +4,8 @@ import { sendEmail } from '../service/SendEmail.js';
 
 class ClientController {
     static updateTransactionStatus = async (orderId) => {
-        Transaction.updateOne({orderId:orderId}, {$set:{paymentStatus:'Accepted'}})
+        console.log(orderId)
+        await Transaction.updateOne({orderId:orderId}, {$set:{paymentStatus:'Accepted'}})
     }
 
     static makePayment = async (req, res, next) => {
