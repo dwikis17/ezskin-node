@@ -1,7 +1,12 @@
 import midtransClient from 'midtrans-client'
 import Transaction from "../model/Transaction.js";
+import { sendEmail } from '../service/SendEmail.js';
 
 class ClientController {
+    static updateTransactionStatus = async (orderId) => {
+        Transaction.updateOne({orderId:orderId}, {$set:{paymentStatus:'Accepted'}})
+    }
+
     static makePayment = async (req, res, next) => {
         let core = new midtransClient.CoreApi({
             isProduction : false,
@@ -30,7 +35,7 @@ class ClientController {
     }
 
     static makeSnapUIPayment = async (req, res, next) => {
-       const {inGameName, tagLine, priceAmount, game, nominalVoucher} = req.query
+       const {inGameName, tagLine, priceAmount, game, nominalVoucher, email} = req.query
        const orderId = `${inGameName}-${Date.now()}`
         let snap = new midtransClient.Snap({
             // Set to true if you want Production Environment (accept real transaction).
@@ -38,7 +43,8 @@ class ClientController {
             serverKey : 'SB-Mid-server-yeZuLmWfa0KrTZyTcA_WqEAj'
         });
 
-       await Transaction.create({...req.query, orderId, paymentStatus: 'Pending'})
+       await Transaction.create({...req.query, orderId, paymentStatus: 'Pending'});
+       await sendEmail(email, orderId)
         let parameter = {
             "transaction_details": {
                 "order_id": orderId,
@@ -71,7 +77,7 @@ static notifyPayment = async (req, res , next) => {
     });
 
     apiClient.transaction.notification(req.body)
-        .then((statusResponse)=>{
+        .then(async (statusResponse)=>{
             let orderId = statusResponse.order_id;
             let transactionStatus = statusResponse.transaction_status;
             let fraudStatus = statusResponse.fraud_status;
@@ -85,10 +91,14 @@ static notifyPayment = async (req, res , next) => {
                     // TODO set transaction status on your database to 'challenge'
                     // and response with 200 OK
                 } else if (fraudStatus == 'accept'){
+                    console.log('duit masuk');
+                    await ClientController.updateTransactionStatus(orderId)
                     // TODO set transaction status on your database to 'success'
 
                 }
             } else if (transactionStatus == 'settlement'){
+                console.log('duit masuk');
+                await ClientController.updateTransactionStatus(orderId)
                 // TODO set transaction status on your database to 'success'
                 // and response with 200 OK
                 
