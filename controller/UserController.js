@@ -78,5 +78,23 @@ class UserController {
 
         return res.sendStatus(200)
     }
+
+    static checkToken = async(req,res,next) => {
+        const {token} = req.params
+        console.log(token)
+        if(token === null) return res.sendStatus(401);
+    
+        try{
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
+                if(err) return res.status(403).json({message: 'Token not valid'})
+                console.log(decodedToken)
+                req.email = decodedToken.email
+                res.status(200).json({decodedToken})
+            })
+        }catch(error){
+            console.log(error)
+        }
+        
+    }
 }
 export default UserController
