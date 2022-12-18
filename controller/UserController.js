@@ -33,7 +33,6 @@ class UserController {
             })
             res.json({msg: "Registered !"})
         } catch (error) {
-            console.log(error,'slafdjk')
             res.status(400).send({success: false, error: {message: error}})
             next(error)
         }
@@ -42,6 +41,7 @@ class UserController {
     static doLogin = async (req, res, next) => {
         try {
             const user = await User.find({email: req.body.email})
+            console.log(req.body)
             console.log(user[0])
             const match = await bcrypt.compare(req.body.password, user[0].password)
             console.log(match);
@@ -82,7 +82,7 @@ class UserController {
 
     static checkToken = async(req,res,next) => {
         const {token} = req.params
-        console.log(token)
+        console.log(token,'gg')
         if(token === null) return res.sendStatus(401);
     
         try{

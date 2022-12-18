@@ -36,20 +36,22 @@ class ClientController {
     }
 
     static makeSnapUIPayment = async (req, res, next) => {
-       const {inGameName, tagLine, priceAmount, game, nominalVoucher, email} = req.query
+        console.log(req.query)
+       const {inGameName, tagLine, price, game, nominal, email} = req.query
+    
        const orderId = `${inGameName}-${Date.now()}`
         let snap = new midtransClient.Snap({
             // Set to true if you want Production Environment (accept real transaction).
             isProduction : false,
             serverKey : 'SB-Mid-server-yeZuLmWfa0KrTZyTcA_WqEAj'
         });
-
+        console.log('s')
        await Transaction.create({...req.query, orderId, paymentStatus: 'Pending'});
-       await sendEmail(email, orderId)
+    //    await sendEmail(email, orderId)
         let parameter = {
             "transaction_details": {
                 "order_id": orderId,
-                "gross_amount": priceAmount
+                "gross_amount": price
             },
             "credit_card":{
                 "secure" : true

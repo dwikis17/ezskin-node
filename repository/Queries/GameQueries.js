@@ -2,18 +2,18 @@ import mongoose from "mongoose";
 import pkg from 'lodash'
 const {isEmpty} = pkg;
 
-const handleSearchKeyword = (searchKeyword) => {
+
+const handleSearchGames = (searchKeyword) => {
     if(!isEmpty(searchKeyword)){
-        return  [
-            {$match:{
-                name:new RegExp(searchKeyword, 'i')
+        return [
+            {
+                $match:{
+                    name:{$regex:`${searchKeyword}`, $options:'i'}
                 }
             }
         ]
-
     }
     return []
-
 }
 export const findAllGames = (searchKeyword) => {
     return [
@@ -25,11 +25,28 @@ export const findAllGames = (searchKeyword) => {
         {
             $project:{
                 name:1,
-                altName:1,
                 image:1
             }
         },
-        ...handleSearchKeyword(searchKeyword)
+        ...handleSearchGames(searchKeyword)
     ]
+}
 
+export const findGamesByName = (name) => {
+    return [
+        {
+            $match:{
+                name:name
+            }
+        },
+        {
+            $lookup:{
+                from:'denomination',
+                localField:'vouchers',
+                foreignField:'_id',
+                as:'vouchers'
+            }
+            
+        }
+    ]
 }
