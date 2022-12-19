@@ -1,11 +1,24 @@
 import midtransClient from 'midtrans-client'
+import lodash from 'lodash';
 import Transaction from "../model/Transaction.js";
 import { sendEmail } from '../service/SendEmail.js';
 
-class ClientController {
+
+class TransactionController {
     static updateTransactionStatus = async (orderId) => {
-        console.log(orderId)
         await Transaction.updateOne({orderId:orderId}, {$set:{paymentStatus:'Accepted'}})
+    }
+
+    static fetchTransactionByOrderId = async (req,res,next) => {
+        try{
+            const {orderId} = req.params
+            console.log(orderId)
+             const data =  await Transaction.findOne({orderId})
+             console.log(data)
+            res.json(data)
+        }catch(error) {
+            next(error)
+        }
     }
 
     static makePayment = async (req, res, next) => {
@@ -38,15 +51,14 @@ class ClientController {
     static makeSnapUIPayment = async (req, res, next) => {
         console.log(req.query)
        const {inGameName, tagLine, price, game, nominal, email} = req.query
-    
        const orderId = `${inGameName}-${Date.now()}`
         let snap = new midtransClient.Snap({
             // Set to true if you want Production Environment (accept real transaction).
             isProduction : false,
             serverKey : 'SB-Mid-server-yeZuLmWfa0KrTZyTcA_WqEAj'
         });
-        console.log('s')
-       await Transaction.create({...req.query, orderId, paymentStatus: 'Pending'});
+
+      
     //    await sendEmail(email, orderId)
         let parameter = {
             "transaction_details": {
@@ -67,6 +79,7 @@ class ClientController {
             .then((transaction)=>{
                 // transaction token
                 let transactionToken = transaction.token;
+                Transaction.create({...req.query, orderId, paymentStatus: 'Pending', transactionToken});
                 res.json(transactionToken)
             })
 }
@@ -118,4 +131,4 @@ static notifyPayment = async (req, res , next) => {
 }
 }
 
-export default ClientController;
+export default TransactionController;

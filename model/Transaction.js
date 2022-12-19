@@ -25,6 +25,9 @@ const transactionSchema = mongoose.Schema({
     },
     paymentStatus: {
         type: String
+    },
+    transactionToken: {
+        type:String
     }
 })
 
