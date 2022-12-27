@@ -12,9 +12,7 @@ class TransactionController {
     static fetchTransactionByOrderId = async (req,res,next) => {
         try{
             const {orderId} = req.params
-            console.log(orderId)
              const data =  await Transaction.findOne({orderId})
-             console.log(data)
             res.json(data)
         }catch(error) {
             next(error)
@@ -107,7 +105,7 @@ static notifyPayment = async (req, res , next) => {
                     // TODO set transaction status on your database to 'challenge'
                     // and response with 200 OK
                 } else if (fraudStatus == 'accept'){
-                    console.log('duit masuk');
+                   
                     await ClientController.updateTransactionStatus(orderId)
                     // TODO set transaction status on your database to 'success'
 
