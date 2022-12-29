@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.Schema({
+const adminSchema = mongoose.Schema({
     name:{
         type: String,
         required : true
@@ -13,9 +13,6 @@ const userSchema = mongoose.Schema({
         type:String,
         required:true
     },
-    refresh_token:{
-        type:String
-    }
 }, {timestamps: true});
 
-export default mongoose.model('admin', userSchema, 'userAdmin')
+export default mongoose.model('admin', adminSchema, 'userAdmin')

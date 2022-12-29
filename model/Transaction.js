@@ -14,20 +14,23 @@ const transactionSchema = mongoose.Schema({
     email: {
         type: String
     },
-    nominalVoucher: {
+    nominal: {
         type: String
     },
-    priceAmount: {
+    price: {
         type: String
     },
     orderId: {
         type: String
     },
-    paymentStatus: {
+    status: {
         type: String
     },
     transactionToken: {
         type:String
+    },
+    transactionDate: {
+        type:Date
     }
 })
 

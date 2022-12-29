@@ -1,31 +1,31 @@
 import lodash from 'lodash';
 import Game from '../model/Game.js';
 import GameService from '../service/GameService.js';
-import { findAllGames, findGamesByName } from '../repository/Queries/GameQueries.js';
 
 const { first } = lodash;
-const { getAllGames } = GameService;
+const { getAllGames, getGameDetailById } = GameService;
 class GameController {
   static fetchGames = async (req, res, next) => {
-    const {searchKeyword} = req.query
+    const { searchKeyword } = req.query
+
     try {
-      const query = findAllGames(searchKeyword)
-      const data = await Game.aggregate(query)
-      res.status(200).send(data);
+      const gameList = await getAllGames(searchKeyword);
+      res.status(200).send(gameList);
     } catch (error) {
       next(error);
     }
   };
 
-  static fetchGameById = async (req, res, next) => {  
-    const {name} = req.params;
+  static fetchGameDetailByname = async (req, res, next) => {  
+    const { name } = req.params;
     const params = name.replace("-", " ")
-    
-    const query = findGamesByName(params);
 
-    const gameDetails = await Game.aggregate(query);
-
-    res.json(gameDetails[0]);
+    try {
+      const gameDetails = await getGameDetailById(params)
+      res.status(200).send(gameDetails)
+    } catch (error) {
+      next(error)
+    }
   };
 }
 

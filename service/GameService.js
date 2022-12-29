@@ -1,9 +1,13 @@
 import GameRepository from "../repository/GameRepository.js";
-const {findAllGames} =GameRepository
+const { findAllGames, findGameDetailByName } =GameRepository
 class GameService {
     static getAllGames = async (searchKeyword) => {
-        const gameData = await findAllGames(searchKeyword)
-        return gameData
+        console.log('msk game service')
+        return findAllGames(searchKeyword)
+    }
+
+    static getGameDetailById = async (searchKeyword) => {
+        return findGameDetailByName(searchKeyword)
     }
 }
 

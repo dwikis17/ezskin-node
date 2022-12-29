@@ -2,10 +2,10 @@ import express from 'express';
 import GameController from "../controller/GameController.js";
 
 
-const { fetchGames, fetchGameById } = GameController
+const { fetchGames, fetchGameDetailByname } = GameController
 const GameRoute = express.Router();
 
 GameRoute.get('/', fetchGames )
-GameRoute.get('/:name', fetchGameById )
+GameRoute.get('/:name', fetchGameDetailByname )
 
 export default GameRoute;
