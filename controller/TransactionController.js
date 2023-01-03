@@ -1,20 +1,28 @@
-import lodash from 'lodash';
 import Transaction from "../model/Transaction.js";
 import { sendEmail } from '../service/SendEmail.js';
 import TransactionService from '../service/TransactionService.js';
 
-const {createTransactionToken , getPaymentNotification} = TransactionService;
+const {createTransactionToken, 
+    getPaymentNotification, 
+    getAllTransaction,
+    updateTransactionStatusById} = TransactionService;
 class TransactionController {
-    static updateTransactionStatus = async (orderId) => {
-        await Transaction.updateOne({orderId:orderId}, {$set:{paymentStatus:'Accepted'}})
-    }
-
     static fetchTransactionByOrderId = async (req,res,next) => {
         try{
             const {orderId} = req.params
             const data =  await Transaction.findOne({orderId})
             res.json(data)
         }catch(error) {
+            next(error)
+        }
+    }
+
+    static fetchAllTransaction = async (req, res, next) => {
+        const {sorter, filterInfo} = req.query
+        try{
+            const transaction = await getAllTransaction(sorter,filterInfo)
+            res.status(200).send(transaction)
+        }catch(error){
             next(error)
         }
     }
@@ -30,11 +38,16 @@ class TransactionController {
     }
 
 static notifyPayment = async (req, res , next) => {
-
     await getPaymentNotification(req.body);
-  
+}
 
-    
+static updateTransactionById = async (req,res,next) => {
+    try{
+       const data = await updateTransactionStatusById(req.params.orderId)
+        res.status(200).send(data)
+    }catch(error){
+        next(error)
+    }
 }
 }
 

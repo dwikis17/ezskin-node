@@ -13,8 +13,5 @@ AdminRoute.get('/', fetchAdmin);
 AdminRoute.post('/', registerAdmin);
 AdminRoute.post('/sign-in', doLogin);
 AdminRoute.get('/verify/:token', checkTokenValidity);
-// AdminRoute.get('/transaction', verifyToken, fetchAllTransaction);
-
-
 
 export default AdminRoute;

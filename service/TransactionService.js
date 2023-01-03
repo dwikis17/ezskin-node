@@ -1,12 +1,22 @@
 import { sendEmail } from "./SendEmail.js";
 import midtransClient from 'midtrans-client'
 import TransactionRepository from "../repository/TransactionRepository.js";
+import { getPaymentParameters } from "../constant/Constant.js";
+import Transaction from "../model/Transaction.js";
 
-const { createTransaction } = TransactionRepository;
+const { createTransaction, updateTransaction, getAllTransactionList, updateTransactionById } = TransactionRepository;
 class TransactionService {
 
     static createTransaction = async (payload) => {
         return createTransaction(payload)
+    }
+
+    static getAllTransaction = async (sorter,filter) => {
+        return getAllTransactionList(sorter,filter);
+    }
+
+    static updateTransactionStatusById = async (orderId) => {
+        return updateTransactionById(orderId)
     }
     
     static createTransactionToken = async (payload) => {
@@ -17,25 +27,10 @@ class TransactionService {
              serverKey : process.env.MIDTRANS_SERVER_KEY
          });
 
-             await sendEmail(email, orderId);
+        await sendEmail(email, orderId);
+        const getParamsPayload = {...payload, orderId}
 
-             let parameter = {
-                "transaction_details": {
-                    "order_id": orderId,
-                    "gross_amount": price
-                },
-                "credit_card":{
-                    "secure" : true
-                },
-                "customer_details": {
-                    "in game name": inGameName,
-                    "tagLine": tagLine,
-                    "email" :email,
-                    'game order' : game,
-                }
-            };
-
-          const token = await snap.createTransaction(parameter)
+          const token = await snap.createTransaction(getPaymentParameters(getParamsPayload))
           const finalPayload = {
             ...payload,
             orderId,
@@ -46,6 +41,10 @@ class TransactionService {
         await this.createTransaction(finalPayload)
         return token;
  }
+
+ static updateTransactionStatus = async (orderId) => {
+    await updateTransaction(orderId)
+}
 
  static getPaymentNotification = (payload) => {
     let apiClient = new midtransClient.Snap({
@@ -67,23 +66,10 @@ class TransactionService {
                     // TODO set transaction status on your database to 'challenge'
                     // and response with 200 OK
                 } else if (fraudStatus == 'accept'){
-                    await ClientController.updateTransactionStatus(orderId)
-                    // TODO set transaction status on your database to 'success'
+                    await this.updateTransactionStatus(orderId)
                 }
             } else if (transactionStatus == 'settlement'){
-                console.log('duit masuk');
-                await ClientController.updateTransactionStatus(orderId)
-                // TODO set transaction status on your database to 'success'
-                // and response with 200 OK
-                
-            } else if (transactionStatus == 'cancel' ||
-                transactionStatus == 'deny' ||
-                transactionStatus == 'expire'){
-                // TODO set transaction status on your database to 'failure'
-                // and response with 200 OK
-            } else if (transactionStatus == 'pending'){
-                // TODO set transaction status on your database to 'pending' / waiting payment
-                console.log('masuk pending')
+                await this.updateTransactionStatus(orderId)
             }
         });
  }

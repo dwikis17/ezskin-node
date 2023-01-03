@@ -48,15 +48,5 @@ class AdminController {
         }
         
     }
-
-    static fetchAllTransaction = async (req, res, next) => {
-        console.log('ss')
-        try{
-            const transaction = await Transaction.find()
-            res.status(200).send(transaction)
-        }catch(error){
-            next(error)
-        }
-    }
 }
 export default AdminController;
