@@ -8,7 +8,13 @@ const gameSchema = mongoose.Schema({
     description: {
         type:String
     },
-    vouchers : [{type: mongoose.Schema.Types.ObjectId, ref:'denomination'}]
+    image: {
+        type:String
+    },
+    imageBanner: {
+        type:String
+    },
+     vouchers : [{type: mongoose.Schema.Types.ObjectId, ref:'denomination'}]
 })
 
 export default mongoose.model('games', gameSchema, 'games')

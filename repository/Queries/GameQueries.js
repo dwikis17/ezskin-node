@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import pkg from 'lodash'
+import mongodb from 'mongodb'
+
+const {ObjectId} = mongodb
 const {isEmpty} = pkg;
 
 
@@ -36,7 +39,9 @@ export const findGamesByName = (name) => {
     return [
         {
             $match:{
-                name:name
+                $or: [
+                    {name:name},
+                ]
             }
         },
         {
