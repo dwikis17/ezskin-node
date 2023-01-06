@@ -1,6 +1,6 @@
 import GameRepository from "../repository/GameRepository.js";
 const { findAllGames, findGameDetailByName, 
-    createNewGame, updateGameById, findGameById } =GameRepository
+    createNewGame, updateGameById, findGameById, updateGameImages } =GameRepository
 class GameService {
     static getAllGames = async (searchKeyword) => {
         return findAllGames(searchKeyword)
@@ -24,6 +24,10 @@ class GameService {
             image: 'noImage.jpg'
         }
         return createNewGame(finalPayload)
+    }
+
+    static updateGameImage = async (id, type, image) => {
+        return updateGameImages(id,type, image)
     }
 }
 

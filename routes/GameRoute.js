@@ -20,7 +20,7 @@ const GameRoute = express.Router();
 GameRoute.get('/', fetchGames )
 GameRoute.post('/',createGames )
 GameRoute.put('/:id', updateGameById )
-GameRoute.put('/upload', upload.single('file'), uploadImage )
+GameRoute.put('/image/upload/:id/:type', upload.single('file'), uploadImage )
 GameRoute.get('/:name', fetchGameDetailByname )
 GameRoute.get('/game-detail/:id', fetchGameById )
 export default GameRoute;

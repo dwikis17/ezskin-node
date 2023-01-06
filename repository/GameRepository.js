@@ -33,6 +33,14 @@ class GameRepository {
                 }
             })
         }
+
+        static updateGameImages = async (id, type, image) => {
+            return Game.updateOne({_id: ObjectId(id)}, {
+                $set:{
+                    [type] : image
+                }
+            })
+        }
 }
 
 export default GameRepository   

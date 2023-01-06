@@ -3,7 +3,7 @@ import Game from '../model/Game.js';
 import GameService from '../service/GameService.js';
 import fs from 'fs'
 const { getAllGames, getGameDetailByName, createNewGame 
-  , updateGame, getGameDetailById} = GameService;
+  , updateGame, getGameDetailById, updateGameImage} = GameService;
 class GameController {
   static fetchGames = async (req, res, next) => {
     const { searchKeyword } = req.query
@@ -49,7 +49,14 @@ class GameController {
   }
 
   static uploadImage = async (req,res,next) => {
+    const {id, type} = req.params
     console.log(req.file)
+    try{
+      const updatedImage = await updateGameImage(id, type, req.file.filename)
+    }catch(error){
+      next(error)
+    }
+   
   }
 
   static updateGameById = async (req, res, next) => {
