@@ -5,7 +5,8 @@ const {fetchAllTransaction,
      makeSnapUIPayment, 
      notifyPayment,
     updateTransactionById, 
-    fetchTransactionByOrderId
+    fetchTransactionByOrderId,
+    getTransactionForChart
 } = TransactionController
 
 const TransactionRoute = express.Router();
@@ -14,5 +15,6 @@ TransactionRoute.get('/', makeSnapUIPayment );
 TransactionRoute.get('/transaction', verifyToken, fetchAllTransaction );
 TransactionRoute.get('/get-transaction/:orderId', fetchTransactionByOrderId );
 TransactionRoute.post('/notification', notifyPayment);
+TransactionRoute.get('/chart', getTransactionForChart);
 TransactionRoute.put('/update/:orderId',verifyToken, updateTransactionById);
 export default TransactionRoute;

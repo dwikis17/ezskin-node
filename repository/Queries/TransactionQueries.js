@@ -40,3 +40,20 @@ export const fetchAllTransaction = (sorter, filter) => {
         ...handleFilter(filter)
     ]
 }
+
+
+export const fetchForChart = () => [
+    {
+        $group: {
+           _id: "$game",
+           price: { $sum: { $convert: { input: "$price", to: "double" } } }
+        }
+     },
+     {
+        $group: {
+           _id: null,
+           game: { $push: "$_id" },
+           totalTransaction: { $push: "$price" }
+        }
+     }
+]

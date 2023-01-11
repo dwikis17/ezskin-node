@@ -1,5 +1,8 @@
 import Transaction from "../model/Transaction.js";
-import { fetchAllTransaction } from "./Queries/TransactionQueries.js";
+import lodash from 'lodash'
+import { fetchAllTransaction,fetchForChart } from "./Queries/TransactionQueries.js";
+
+const {first} = lodash
 class TransactionRepository{
     static createTransaction = (payload) => {
         return Transaction.create(payload)
@@ -17,6 +20,11 @@ class TransactionRepository{
 
     static updateTransactionById = (orderId) => {
         return Transaction.updateOne({orderId}, {$set:{status:'Done'}})
+    }
+
+    static getAllTransactionForChart = async () => {
+        const query = fetchForChart()
+        return first(await Transaction.aggregate(query))
     }
 }
 

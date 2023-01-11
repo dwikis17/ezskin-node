@@ -5,7 +5,9 @@ import TransactionService from '../service/TransactionService.js';
 const {createTransactionToken, 
     getPaymentNotification, 
     getAllTransaction,
-    updateTransactionStatusById} = TransactionService;
+    updateTransactionStatusById,
+    fetchTransactionForChart
+} = TransactionService;
 class TransactionController {
     static fetchTransactionByOrderId = async (req,res,next) => {
         try{
@@ -46,6 +48,15 @@ static updateTransactionById = async (req,res,next) => {
        const data = await updateTransactionStatusById(req.params.orderId)
         res.status(200).send(data)
     }catch(error){
+        next(error)
+    }
+}
+
+static getTransactionForChart = async (req, res, next) => {
+    try {
+        const data = await fetchTransactionForChart()
+        res.status(200).send(data)
+    }catch(error) {
         next(error)
     }
 }

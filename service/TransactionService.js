@@ -4,7 +4,8 @@ import TransactionRepository from "../repository/TransactionRepository.js";
 import { getPaymentParameters } from "../constant/Constant.js";
 import Transaction from "../model/Transaction.js";
 
-const { createTransaction, updateTransaction, getAllTransactionList, updateTransactionById } = TransactionRepository;
+const { createTransaction, updateTransaction, getAllTransactionList, updateTransactionById,
+    getAllTransactionForChart } = TransactionRepository;
 class TransactionService {
 
     static createTransaction = async (payload) => {
@@ -44,6 +45,10 @@ class TransactionService {
 
  static updateTransactionStatus = async (orderId) => {
     await updateTransaction(orderId)
+}
+
+static fetchTransactionForChart = async () => {
+    return getAllTransactionForChart()
 }
 
  static getPaymentNotification = (payload) => {
