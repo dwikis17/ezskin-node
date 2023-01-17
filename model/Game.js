@@ -14,6 +14,12 @@ const gameSchema = mongoose.Schema({
     imageBanner: {
         type:String
     },
+    imageOriginalName: {
+        type:String
+    },
+    imageBannerOriginalName: {
+        type:String
+    },
      vouchers : [{type: mongoose.Schema.Types.ObjectId, ref:'denomination'}]
 })
 

@@ -26,9 +26,10 @@ class AdminController {
 
     static doLogin = async (req, res, next) => {
         try {
-            const accessToken = await doLogin(req.body)
+            const accessToken = await doLogin(req.body, next)
             res.json({accessToken})
         } catch (error){
+            console.log(error,'error')
             next(error)
         }
     }

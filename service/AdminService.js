@@ -40,15 +40,16 @@ class AdminService {
         return registerNewAdmin(finalPayload)
     }
 
-    static doLogin = async (payload) => {
+    static doLogin = async (payload, next) => {
         const {email, password} = payload;
         const foundedAdmin = await findAdminByEmail(email)
         const isPasswordMatch = await bcrypt.compare(password, foundedAdmin.password)
      
         if(!isPasswordMatch) {
-            const error = new Error('Password did not match!')
-            error.status = 500;
-            throw error
+            const error = new Error();
+            error.status = 401;
+            error.message = "password did not match!"
+           throw error
         }
 
         const userId = foundedAdmin._id;

@@ -26,8 +26,8 @@ class GameService {
         return createNewGame(finalPayload)
     }
 
-    static updateGameImage = async (id, type, image) => {
-        return updateGameImages(id,type, image)
+    static updateGameImage = async (id, type, image, originalname) => {
+        return updateGameImages(id,type, image,originalname)
     }
 }
 

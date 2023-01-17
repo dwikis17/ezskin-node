@@ -50,9 +50,10 @@ class GameController {
 
   static uploadImage = async (req,res,next) => {
     const {id, type} = req.params
-    console.log(req.file)
+    const {filename, originalname} = req.file 
     try{
-      const updatedImage = await updateGameImage(id, type, req.file.filename)
+      const updatedImage = await updateGameImage(id, type, filename, originalname)
+      res.status(200).json({message:"UPLOAD IMAGE SUCCESS"})
     }catch(error){
       next(error)
     }

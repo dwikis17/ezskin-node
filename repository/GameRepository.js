@@ -34,10 +34,11 @@ class GameRepository {
             })
         }
 
-        static updateGameImages = async (id, type, image) => {
+        static updateGameImages = async (id, type, image, originalname) => {
             return Game.updateOne({_id: ObjectId(id)}, {
                 $set:{
-                    [type] : image
+                    [type] : image,
+                    [`${type}OriginalName`] : originalname
                 }
             })
         }
