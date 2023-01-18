@@ -1,6 +1,6 @@
 import DenominationService from "../service/DenominationService.js"
 
-const { getAllDenomination } = DenominationService
+const { getAllDenomination, createNewDenomination } = DenominationService
 
 class DenominationController {
  static fetchDenomination = async (req, res, next) => {
@@ -8,6 +8,15 @@ class DenominationController {
         const denominationList = await getAllDenomination()
         res.status(200).send(denominationList)
     } catch (error){
+        next(error)
+    }
+ }
+
+ static createDenomination = async (req, res, next) => {
+    try {
+        const createdDenomination = await createNewDenomination(req.body)
+        res.status(201).send(createdDenomination)
+    } catch(error) {
         next(error)
     }
  }
