@@ -19,7 +19,7 @@ class AdminService {
         const { name, email, password, key } = payload
         const salt = await bcrypt.genSalt();
         const hashPassword = await bcrypt.hash(password, salt)
-        
+
         if ( key !== process.env.REGISTER_KEY) {
            const error = new Error('Incorrect Register Key !')
            error.status = 500;
@@ -44,17 +44,17 @@ class AdminService {
         const {email, password} = payload;
         const foundedAdmin = await findAdminByEmail(email)
         const isPasswordMatch = await bcrypt.compare(password, foundedAdmin.password)
-     
+
         if(!isPasswordMatch) {
             const error = new Error();
             error.status = 401;
             error.message = "password did not match!"
-           throw error
+            throw error
         }
 
         const userId = foundedAdmin._id;
         const name = foundedAdmin.name;
-    
+
         const accessToken = jwt.sign({userId, name, email}, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn : '24h'
         })

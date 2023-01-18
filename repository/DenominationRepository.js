@@ -1,9 +1,9 @@
 import Denomination from "../model/Denomination.js";
 
-class DenominationReposistory {
+class DenominationRepository {
  static getDenomination = () => {
     return Denomination.find({})
  }
 }
 
-export default DenominationReposistory;
+export default DenominationRepository;

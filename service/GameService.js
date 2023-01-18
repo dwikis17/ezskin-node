@@ -1,6 +1,16 @@
 import GameRepository from "../repository/GameRepository.js";
-const { findAllGames, findGameDetailByName, 
-    createNewGame, updateGameById, findGameById, updateGameImages, findAllGamesForAdmin , updateGameStatusById} =GameRepository
+
+const {
+    findAllGames,
+    findGameDetailByName,
+    createNewGame,
+    updateGameById,
+    findGameById,
+    updateGameImages,
+    findAllGamesForAdmin,
+    updateGameStatusById
+} = GameRepository
+
 class GameService {
     static getAllGames = async (searchKeyword) => {
         return findAllGames(searchKeyword)
@@ -21,7 +31,7 @@ class GameService {
     static updateGame = async (payload, id) => {
         return updateGameById(payload, id);
     }
-    
+
     static updateGameStatus = async (payload) => {
         const modifiedPayload = {
             ...payload,

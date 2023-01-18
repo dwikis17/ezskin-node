@@ -1,10 +1,11 @@
 import express from 'express';
-import { verifyToken } from '../Middleware/Verify.js';
 import AdminController from '../controller/AdminController.js';
 
 const {
-  fetchAdmin, registerAdmin,
-   doLogin, logOut, checkTokenValidity, fetchAllTransaction,
+    fetchAdmin,
+    registerAdmin,
+    doLogin,
+    checkTokenValidity
 } = AdminController;
 
 const AdminRoute = express.Router();

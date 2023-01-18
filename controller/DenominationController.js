@@ -1,6 +1,6 @@
 import DenominationService from "../service/DenominationService.js"
 
-const {getAllDenomination} = DenominationService
+const { getAllDenomination } = DenominationService
 
 class DenominationController {
  static fetchDenomination = async (req, res, next) => {
@@ -10,7 +10,6 @@ class DenominationController {
     } catch (error){
         next(error)
     }
- 
  }
 }
 

@@ -10,10 +10,9 @@ class AdminRepository {
         static findAdminByEmail = async (email) => {
             return await Admin.findOne({email:email})
         }
-        
+
         static registerNewAdmin = async (payload) => {
-            console.log(payload)
-               await  Admin.create(payload)
+            await Admin.create(payload)
         }
 }
 

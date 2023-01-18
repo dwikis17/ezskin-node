@@ -1,6 +1,6 @@
-import DenominationReposistory from "../repository/DenominationRepository.js";
+import DenominationRepository from "../repository/DenominationRepository.js";
 
-const {getDenomination} = DenominationReposistory
+const { getDenomination } = DenominationRepository
 
 class DenominationService {
     static getAllDenomination = async () => {
