@@ -1,6 +1,7 @@
 import express from 'express';
 import GameController from "../controller/GameController.js";
 import multer from 'multer'
+import { verifyToken } from '../Middleware/Verify.js';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -14,10 +15,12 @@ const storage = multer.diskStorage({
   const upload = multer({ storage: storage });
 
 const { fetchGames, fetchGameDetailByname, 
-  createGames, uploadImage, updateGameById, fetchGameById } = GameController
+  createGames, uploadImage, updateGameById, fetchGameById, fetchGameForAdmin , updateGameStatus} = GameController
 const GameRoute = express.Router();
 
 GameRoute.get('/', fetchGames )
+GameRoute.get('/games',verifyToken, fetchGameForAdmin )
+GameRoute.put('/update-status',verifyToken, updateGameStatus )
 GameRoute.post('/',createGames )
 GameRoute.put('/:id', updateGameById )
 GameRoute.put('/image/upload/:id/:type', upload.single('file'), uploadImage )

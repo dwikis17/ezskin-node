@@ -3,7 +3,7 @@ import Game from '../model/Game.js';
 import GameService from '../service/GameService.js';
 import fs from 'fs'
 const { getAllGames, getGameDetailByName, createNewGame 
-  , updateGame, getGameDetailById, updateGameImage} = GameService;
+  , updateGame, getGameDetailById, updateGameImage, fetchAllGamesForAdmin, updateGameStatus} = GameService;
 class GameController {
   static fetchGames = async (req, res, next) => {
     const { searchKeyword } = req.query
@@ -45,7 +45,6 @@ class GameController {
     } catch(error){
       next(error)
     }
-    
   }
 
   static uploadImage = async (req,res,next) => {
@@ -63,6 +62,24 @@ class GameController {
   static updateGameById = async (req, res, next) => {
     try{
       const updatedData = await updateGame(req.body, req.params)
+      res.status(200).send(updatedData)
+    }catch(error){
+      next(error)
+    }
+  }
+
+  static fetchGameForAdmin = async (req, res, next) => {
+    try {
+      const gameList = await fetchAllGamesForAdmin()
+      res.status(200).send(gameList)
+    } catch(error){
+      next(error)
+    }
+  }
+
+  static updateGameStatus = async (req, res, next) => {
+    try{
+      const updatedData = await updateGameStatus(req.body)
       res.status(200).send(updatedData)
     }catch(error){
       next(error)

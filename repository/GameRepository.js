@@ -1,4 +1,4 @@
-import {findAllGames, findGamesByName} from "./Queries/GameQueries.js";
+import {findAllGames, findGamesByName, findAllGamesForAdmin} from "./Queries/GameQueries.js";
 import Game from './../model/Game.js'
 import lodash from 'lodash'
 import mongodb from 'mongodb'
@@ -8,6 +8,11 @@ const { first } = lodash
 class GameRepository {
         static findAllGames = async (searchKeyword) => {
             const query = findAllGames(searchKeyword)
+            return Game.aggregate(query)
+        }
+
+        static findAllGamesForAdmin = async () => {
+            const query = findAllGamesForAdmin()
             return Game.aggregate(query)
         }
 
@@ -30,6 +35,14 @@ class GameRepository {
                     name: payload.name,
                     description: payload.description,
                     vouchers: payload.vouchers
+                }
+            })
+        }
+
+        static updateGameStatusById = async (payload) => {
+            return Game.updateOne({_id:ObjectId(payload.id)}, {
+                $set:{
+                    status:payload.status
                 }
             })
         }

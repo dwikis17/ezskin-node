@@ -11,6 +11,9 @@ const gameSchema = mongoose.Schema({
     image: {
         type:String
     },
+    status: {
+        type:String
+    },
     imageBanner: {
         type:String
     },

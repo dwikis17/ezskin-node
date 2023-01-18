@@ -21,6 +21,11 @@ const handleSearchGames = (searchKeyword) => {
 export const findAllGames = (searchKeyword) => {
     return [
         {
+            $match:{
+                status:'Listed'
+            }
+        },
+        {
             $sort: {
                 _id:-1
             }
@@ -35,12 +40,30 @@ export const findAllGames = (searchKeyword) => {
     ]
 }
 
+export const findAllGamesForAdmin =  () => {
+    return [
+        {
+            $sort: {
+                _id:-1
+            }
+        },
+        {
+            $project:{
+                name:1,
+                image:1,
+                status:1
+            }
+        },
+    ]
+}
+
 export const findGamesByName = (name) => {
     return [
         {
             $match:{
-                $or: [
+                $and: [
                     {name:name},
+                    {status:'Listed'}
                 ]
             }
         },
