@@ -1,5 +1,5 @@
 import User from "../model/User.js";
-import jwt, {decode} from 'jsonwebtoken'
+import jwt, { decode } from 'jsonwebtoken'
 
 export const refreshToken= async (req, res) => {
     try {

@@ -1,8 +1,7 @@
 import nodemailer from 'nodemailer'
 
 export const sendEmail =  async (custEmail, orderId) => {
-    console.log(custEmail, 'email')
-    var transporter = nodemailer.createTransport({
+      var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: 'ezskinemailservice@gmail.com',

@@ -1,6 +1,4 @@
 import jwt from 'jsonwebtoken'
-import bcrypt from 'bcrypt'
-import Transaction from "../model/Transaction.js";
 import AdminService from "../service/AdminService.js";
 
 const { fetchAllAdmin, registerAdmin, doLogin } = AdminService;
@@ -17,7 +15,7 @@ class AdminController {
 
     static registerAdmin = async (req, res, next) => {
         try {
-            const admin = await registerAdmin(req.body)
+            await registerAdmin(req.body)
             res.status(201).json({message:'Register Success !'})
         } catch (error) {
             next(error)
@@ -28,26 +26,23 @@ class AdminController {
         try {
             const accessToken = await doLogin(req.body, next)
             res.json({accessToken})
-        } catch (error){
-            console.log(error,'error')
+        } catch(error) {
             next(error)
         }
     }
 
-
     static checkTokenValidity = async(req, res, next) => {
         const {token} = req.params
-        if(token === null) return res.sendStatus(401);
+        if (token === null) return res.sendStatus(401);
         try{
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
                 if(err) return res.status(403).json({message: 'Token not valid'})
                 req.email = decodedToken.email
                 res.status(200).json({decodedToken})
             })
-        }catch(error){
+        } catch(error) {
             next(error)
         }
-        
     }
 }
 export default AdminController;
