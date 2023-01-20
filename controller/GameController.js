@@ -15,6 +15,7 @@ class GameController {
   static fetchGames = async (req, res, next) => {
     const { searchKeyword } = req.query
     try {
+      console.log('sss')
       const gameList = await getAllGames(searchKeyword);
       res.status(200).send(gameList);
     } catch (error) {
