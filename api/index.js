@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import indexRoute from './routes/index.js'
+import indexRoute from '../routes/index.js'
 import express from 'express'
 import dotenv from 'dotenv'
 import http from 'http'
