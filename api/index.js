@@ -25,10 +25,10 @@ app.use(cors({credentials: true, origin:'http://localhost:3000'}));
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, '/uploads')));
-app.get('/uploads?:name', function(req, res) {
+app.get('/uploads/:name', function(req, res) {
   const {name} = req.params
   console.log(name,' nameee')
-  res.sendFile(`./{$name}`,{root:__dirname});
+  res.sendFile(`uploads/${name}`,{root:__dirname});
 
 });
 indexRoute(app)
