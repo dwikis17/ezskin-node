@@ -24,7 +24,7 @@ const __dirname = path.dirname(__filename);
 app.use(cors({credentials: true, origin:'http://localhost:3000'}));
 app.use(cookieParser())
 app.use(express.json())
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 indexRoute(app)
 
