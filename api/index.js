@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, '/uploads')));
 app.get('/uploads/:name', function(req, res) {
   const {name} = req.params
   console.log(name,' nameee')
-  res.sendFile(`../uploads/${name}`,{root:__dirname});
+  res.sendFile(path.resolve(`../uploads/${name}`),{root:__dirname});
 
 });
 indexRoute(app)
