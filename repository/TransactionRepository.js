@@ -14,7 +14,6 @@ class TransactionRepository{
 
     static getAllTransactionList = (sorter,filter) => {
         const query = fetchAllTransaction(sorter,filter)
-        console.log(query)
         return Transaction.aggregate(query)
     }
 
@@ -22,8 +21,9 @@ class TransactionRepository{
         return Transaction.updateOne({orderId}, {$set:{status:'Done'}})
     }
 
-    static getAllTransactionForChart = async () => {
-        const query = fetchForChart()
+    static getAllTransactionForChart = async (month, year) => {
+
+        const query = fetchForChart(Number(month), Number(year))
         return first(await Transaction.aggregate(query))
     }
 }

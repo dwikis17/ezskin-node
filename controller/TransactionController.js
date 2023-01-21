@@ -55,7 +55,8 @@ class TransactionController {
 
     static getTransactionForChart = async (req, res, next) => {
         try {
-            const data = await fetchTransactionForChart()
+            const {month, year} = req.query
+            const data = await fetchTransactionForChart(month, year)
             res.status(200).send(data)
         } catch(error) {
             next(error)

@@ -42,7 +42,20 @@ export const fetchAllTransaction = (sorter, filter) => {
 }
 
 
-export const fetchForChart = () => [
+export const fetchForChart = (month, year) => [
+    {
+        $addFields:{
+            month: {$month:'$transactionDate'},
+            year: {$year:'$transactionDate'}
+        }
+    },
+    {
+        $match:{
+            month:month,
+            year:year,
+            status:'Done'
+        }
+    },
     {
         $group: {
            _id: "$game",
