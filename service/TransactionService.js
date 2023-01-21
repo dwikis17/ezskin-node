@@ -2,7 +2,8 @@ import { sendEmail } from "./SendEmail.js";
 import midtransClient from 'midtrans-client'
 import TransactionRepository from "../repository/TransactionRepository.js";
 import { getPaymentParameters } from "../constant/Constant.js";
-
+import lodash from "lodash";
+const {isEmpty} = lodash
 const {
     createTransaction,
     updateTransaction,
@@ -51,8 +52,17 @@ class TransactionService {
         await updateTransaction(orderId)
     }
 
-    static fetchTransactionForChart = async () => {
-        return getAllTransactionForChart()
+    static fetchTransactionForChart = async (month, year) => {
+        const data =  await getAllTransactionForChart(month, year)
+        console.log(data)
+        if(isEmpty(data)){
+            return {
+                _id: null,
+                game: [  ],
+                totalTransaction: [  ]
+              }
+        }
+        return data
     }
 
     static getPaymentNotification = (payload) => {
