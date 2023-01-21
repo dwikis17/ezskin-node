@@ -21,7 +21,7 @@ res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content- T
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
-app.use(cors({credentials: true, origin:'https://final-thesis-5pktsgx5l-dwikis17.vercel.app'}));
+app.use(cors({credentials: true, origin:process.env.CORS_ORIGIN}));
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, '/uploads')));
