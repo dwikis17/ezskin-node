@@ -54,7 +54,6 @@ class TransactionService {
 
     static fetchTransactionForChart = async (month, year) => {
         const data =  await getAllTransactionForChart(month, year)
-        console.log(data)
         if(isEmpty(data)){
             return {
                 _id: null,
