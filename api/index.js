@@ -23,7 +23,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
-app.use(cors({credentials: true, origin:'https://final-thesis-rhbkkkl2q-dwikis17.vercel.app'}));
+app.use(cors({credentials: true, origin:'https://final-thesis-bio8ln48f-dwikis17.vercel.app'}));
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, '/uploads')));
