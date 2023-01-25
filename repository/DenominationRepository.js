@@ -1,5 +1,7 @@
 import Denomination from "../model/Denomination.js";
+import mongodb from 'mongodb'
 
+const {ObjectId} = mongodb
 class DenominationRepository {
  static getDenomination = () => {
     return Denomination.find({})
@@ -11,6 +13,10 @@ class DenominationRepository {
 
  static findDenominationByNominal = (nominal) => {
    return Denomination.findOne({nominal})
+ }
+
+ static deleteDenominationById = (id) => {
+  return Denomination.deleteOne({_id:ObjectId(id)})
  }
 }
 

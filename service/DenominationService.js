@@ -2,7 +2,7 @@ import lodash from 'lodash'
 const {isEmpty} = lodash
 import DenominationRepository from "../repository/DenominationRepository.js";
 
-const { getDenomination, createDenomination, findDenominationByNominal } = DenominationRepository
+const { getDenomination, createDenomination, findDenominationByNominal, deleteDenominationById } = DenominationRepository
 
 class DenominationService {
     static getAllDenomination = async () => {
@@ -23,6 +23,10 @@ class DenominationService {
             throw error
         }
         return createDenomination(payload)
+    }
+
+    static deleteById = async (id) => {
+        return deleteDenominationById(id)
     }
 }
 

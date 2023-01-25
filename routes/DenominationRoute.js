@@ -4,9 +4,10 @@ import DenominationController from '../controller/DenominationController.js';
 
 const DenominationRoute = express.Router();
 
-const { fetchDenomination, createDenomination } = DenominationController
+const { fetchDenomination, createDenomination, deleteDenomination} = DenominationController
 
 DenominationRoute.get('/', verifyToken, fetchDenomination);
+DenominationRoute.delete('/:id',verifyToken, deleteDenomination);
 DenominationRoute.post('/', verifyToken, createDenomination);
 
 export default DenominationRoute;
