@@ -12,7 +12,9 @@ import fs from 'fs'
 dotenv.config();
 
 const app = express();
-app.use(cors({credentials: true, origin:'https://final-thesis-hfxjcr1ax-dwikis17.vercel.app'}));
+
+app.use(cors({credentials: true, origin:'http://localhost:3000'}));
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); 
   res.header("Access-Control-Allow-Methods", "GET", "PUT", "POST", "DELETE", "OPTIONS");
