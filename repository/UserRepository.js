@@ -1,19 +1,19 @@
-import Admin from "../model/Admin.js";
+import User from "../model/User.js";
 import { findAllAdmin } from "./Queries/AdminQueries.js"
 
-class AdminRepository {
+class UserRepository {
         static findAllAdmin = () => {
             const query = findAllAdmin();
-            return Admin.aggregate(query)
+            return User.aggregate(query)
         }
 
         static findAdminByEmail = async (email) => {
-            return await Admin.findOne({email:email})
+            return await User.findOne({email:email})
         }
 
         static registerNewAdmin = async (payload) => {
-            await Admin.create(payload)
+            await User.create(payload)
         }
 }
 
-export default AdminRepository
+export default UserRepository

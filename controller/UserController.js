@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken'
-import AdminService from "../service/AdminService.js";
+import jwt, { decode } from 'jsonwebtoken'
+import UserService from "../service/UserService.js";
 
-const { fetchAllAdmin, registerAdmin, doLogin } = AdminService;
+const { fetchAllAdmin, registerUser: registerAdmin, doLogin } = UserService;
 
-class AdminController {
+class UserController {
     static fetchAdmin = async (req, res, next) => {
         try{
             const adminList = await fetchAllAdmin();
@@ -13,7 +13,7 @@ class AdminController {
         }
     }
 
-    static registerAdmin = async (req, res, next) => {
+    static registerUser = async (req, res, next) => {
         try {
             await registerAdmin(req.body)
             res.status(201).json({message:'Register Success !'})
@@ -24,8 +24,8 @@ class AdminController {
 
     static doLogin = async (req, res, next) => {
         try {
-            const accessToken = await doLogin(req.body, next)
-            res.json({accessToken})
+            const data = await doLogin(req.body, next)
+            res.json({accessToken:data.accessToken, isAdmin:data.isAdmin})
         } catch(error) {
             next(error)
         }
@@ -37,6 +37,7 @@ class AdminController {
         try{
             jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
                 if(err) return res.status(403).json({message: 'Token not valid'})
+                console.log(decodedToken)
                 req.email = decodedToken.email
                 res.status(200).json({decodedToken})
             })
@@ -45,4 +46,4 @@ class AdminController {
         }
     }
 }
-export default AdminController;
+export default UserController;

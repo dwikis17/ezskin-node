@@ -50,9 +50,11 @@ mongoose.connect(
     process.env.DB_CONNECTION,
     {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
     }
-);
+).then(()=> {
+  console.log('connected to mongodb')
+});
 
 const port = process.env.PORT || 80;
 const server = http.createServer(app);

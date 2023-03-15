@@ -1,12 +1,12 @@
-import AdminRepository from "../repository/AdminRepository.js";
+import UserRepository from "../repository/UserRepository.js";
 import bcrypt from 'bcrypt';
 import lodash from 'lodash'
 import jwt from 'jsonwebtoken'
 
 const { isEmpty } = lodash;
 
-const { findAllAdmin, findAdminByEmail, registerNewAdmin } = AdminRepository;
-class AdminService {
+const { findAllAdmin, findAdminByEmail, registerNewAdmin } = UserRepository;
+class UserService {
     static fetchAllAdmin = async (req, res, next) => {
         return await findAllAdmin();
     }
@@ -15,16 +15,16 @@ class AdminService {
         return !isEmpty(await findAdminByEmail(email))
     }
 
-    static registerAdmin = async (payload) => {
+    static registerUser = async (payload) => {
         const { name, email, password, key } = payload
         const salt = await bcrypt.genSalt();
         const hashPassword = await bcrypt.hash(password, salt)
-
-        if ( key !== process.env.REGISTER_KEY) {
-           const error = new Error('Incorrect Register Key !')
-           error.status = 500;
-           throw error;
-        }
+        console.log(payload,'pay')
+        // if ( key !== process.env.REGISTER_KEY) {
+        //    const error = new Error('Incorrect Register Key !')
+        //    error.status = 500;
+        //    throw error;
+        // }
 
        const isEmailDuplicate = await this.checkIsEmailDuplicate(email);
         if(isEmailDuplicate){
@@ -34,7 +34,7 @@ class AdminService {
         }
 
         const finalPayload = {
-            name, email, password: hashPassword
+            name, email, password: hashPassword, isAdmin: false
         }
 
         return registerNewAdmin(finalPayload)
@@ -44,7 +44,7 @@ class AdminService {
         const {email, password} = payload;
         const foundedAdmin = await findAdminByEmail(email)
         const isPasswordMatch = await bcrypt.compare(password, foundedAdmin.password)
-
+        console.log(foundedAdmin,'founded')
         if(!isPasswordMatch) {
             const error = new Error();
             error.status = 401;
@@ -54,13 +54,14 @@ class AdminService {
 
         const userId = foundedAdmin._id;
         const name = foundedAdmin.name;
-
-        const accessToken = jwt.sign({userId, name, email}, process.env.ACCESS_TOKEN_SECRET, {
+        const isAdmin = foundedAdmin.isAdmin
+        console.log(isAdmin,'isadmin')
+        const accessToken = jwt.sign({userId, name, email, isAdmin}, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn : '24h'
         })
 
-        return accessToken;
+        return {accessToken, isAdmin:foundedAdmin.isAdmin};
     }
 }
 
-export default AdminService;
+export default UserService;

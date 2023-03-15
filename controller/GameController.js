@@ -25,7 +25,6 @@ class GameController {
   static fetchGameDetailByName = async (req, res, next) => {
     const { name } = req.params;
     const params = name.replace("-", " ")
-    console.log(params)
     try {
       const gameDetails = await getGameDetailByName(params)
       res.status(200).send(gameDetails)
