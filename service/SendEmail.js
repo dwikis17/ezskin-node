@@ -4,16 +4,16 @@ export const sendEmail =  async (custEmail, orderId) => {
       var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'ezskinemailservice@gmail.com',
+          user: 'topupkuymailservice@gmail.com',
           pass: process.env.emailPassword
         }
       });
 
       var mailOptions = {
-        from: 'ezskinemailservice@gmail.com',
+        from: 'topupkuymailservice@gmail.com',
         to: custEmail,
         subject: `Order ID : ${orderId}`,
-        text: `Terimakasih sudah berbelanja !! silakan melanjutkan ke pembayaran untuk order id ${orderId}`
+        text: `Thanks for your order ! your order id is ${orderId}`
       };
 
       transporter.sendMail(mailOptions, function(error, info){
